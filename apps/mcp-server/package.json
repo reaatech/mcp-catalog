@@ -1,0 +1,39 @@
+{
+  "name": "@mcp-catalog/mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "author": "Rick Somers <rick@reaatech.com> (https://reaatech.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reaatech/mcp-catalog.git"
+  },
+  "homepage": "https://github.com/reaatech/mcp-catalog/tree/main/apps/mcp-server",
+  "bugs": {
+    "url": "https://github.com/reaatech/mcp-catalog/issues"
+  },
+  "bin": {
+    "mcp-catalog-server": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@mcp-catalog/shared": "workspace:*",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}
