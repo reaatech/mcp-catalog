@@ -1,0 +1,41 @@
+{
+  "name": "mcp-catalog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "author": "Rick Somers <rick@reaatech.com> (https://reaatech.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reaatech/mcp-catalog.git"
+  },
+  "homepage": "https://github.com/reaatech/mcp-catalog",
+  "bugs": {
+    "url": "https://github.com/reaatech/mcp-catalog/issues"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm -F api db:generate",
+    "db:migrate": "pnpm -F api db:migrate",
+    "db:push": "pnpm -F api db:push",
+    "db:studio": "pnpm -F api db:studio",
+    "db:seed": "pnpm -F api db:seed"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.0",
+    "prettier": "^3.2.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

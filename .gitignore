@@ -1,0 +1,16 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+*.log
+coverage
+.vscode
+.idea
+.claude
+DEV_PLAN.md
+*.tgz
+.npm
+.eslintcache
+.DS_Store
+Thumbs.db
