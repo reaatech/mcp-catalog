@@ -12,5 +12,6 @@ DEV_PLAN.md
 *.tgz
 .npm
 .eslintcache
+*.tsbuildinfo
 .DS_Store
 Thumbs.db
