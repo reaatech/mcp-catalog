@@ -24,13 +24,13 @@
   },
   "dependencies": {
     "@mcp-catalog/shared": "workspace:*",
-    "react": "^18.2.0",
+    "react": "^19.2.5",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.1.0",
-    "@types/react": "^18.2.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.0",
