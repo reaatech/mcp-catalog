@@ -52,7 +52,7 @@ export class HealthCheckScheduler {
         .where(sql`${healthChecks.checkedAt} < ${cutoff}`);
       logger.info(`Health check retention cleanup: removed records older than ${RETENTION_DAYS} days`);
     } catch (err) {
-      logger.error('Health check retention cleanup failed:', err);
+      logger.error({ err }, 'Health check retention cleanup failed');
     }
   }
 
@@ -82,7 +82,7 @@ export class HealthCheckScheduler {
           logger.warn(`Server ${r.serverId} is ${r.status}: ${r.errorMessage || `HTTP ${r.statusCode}`}`);
         });
     } catch (error) {
-      logger.error('Health check run failed:', error);
+      logger.error({ err: error }, 'Health check run failed');
     } finally {
       this.isRunning = false;
     }
@@ -93,7 +93,7 @@ export class HealthCheckScheduler {
       await healthCheckService.checkServer(serverId);
       logger.info(`Manual health check completed for server ${serverId}`);
     } catch (error) {
-      logger.error(`Manual health check failed for server ${serverId}:`, error);
+      logger.error({ err: error }, `Manual health check failed for server ${serverId}`);
       throw error;
     }
   }
