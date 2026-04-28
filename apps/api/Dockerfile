@@ -16,7 +16,7 @@ RUN pnpm install --frozen-lockfile --filter api...
 COPY apps/api ./apps/api
 COPY packages/shared ./packages/shared
 
-RUN pnpm -F api build
+RUN pnpm -F shared build && pnpm -F api build
 
 # Production stage
 FROM node:20-alpine AS production

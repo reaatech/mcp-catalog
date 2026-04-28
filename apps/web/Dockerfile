@@ -16,7 +16,7 @@ RUN pnpm install --frozen-lockfile --filter web...
 COPY apps/web ./apps/web
 COPY packages/shared ./packages/shared
 
-RUN pnpm -F web build
+RUN pnpm -F shared build && pnpm -F web build
 
 # Production stage
 FROM nginx:alpine AS production

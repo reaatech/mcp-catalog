@@ -16,7 +16,7 @@ RUN pnpm install --frozen-lockfile --filter mcp-server...
 COPY apps/mcp-server ./apps/mcp-server
 COPY packages/shared ./packages/shared
 
-RUN pnpm -F mcp-server build
+RUN pnpm -F shared build && pnpm -F mcp-server build
 
 # Production stage
 FROM node:20-alpine AS production
