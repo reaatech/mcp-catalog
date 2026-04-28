@@ -38,7 +38,7 @@
     "@mcp-catalog/shared": "workspace:*",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.0",
-    "drizzle-orm": "^0.41.0",
+    "drizzle-orm": "^0.45.2",
     "envalid": "^8.0.0",
     "fastify": "^4.26.0",
     "fastify-type-provider-zod": "^1.1.0",
