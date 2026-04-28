@@ -41,7 +41,7 @@
     "drizzle-orm": "^0.41.0",
     "envalid": "^8.0.0",
     "fastify": "^4.26.0",
-    "fastify-type-provider-zod": "^1.1.0",
+    "fastify-type-provider-zod": "^6.1.0",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.11.0",
     "pino": "^8.17.0",
