@@ -120,7 +120,7 @@ jobs:
         uses: docker/setup-buildx-action@v4
 
       - name: Build API image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./apps/api/Dockerfile
@@ -128,7 +128,7 @@ jobs:
           tags: mcp-catalog-api:latest
 
       - name: Build Web image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./apps/web/Dockerfile
@@ -136,7 +136,7 @@ jobs:
           tags: mcp-catalog-web:latest
 
       - name: Build MCP Server image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./apps/mcp-server/Dockerfile
