@@ -1,5 +1,5 @@
 {
-  "name": "@mcp-catalog/mcp-server",
+  "name": "@reaatech/mcp-catalog-mcp-server",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "@mcp-catalog/shared": "workspace:*",
+    "@reaatech/mcp-catalog-shared": "workspace:*",
     "zod": "^3.22.0"
   },
   "devDependencies": {

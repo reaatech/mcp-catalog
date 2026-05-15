@@ -1,5 +1,5 @@
 {
-  "name": "@mcp-catalog/api",
+  "name": "@reaatech/mcp-catalog-api",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
@@ -35,7 +35,7 @@
     "@fastify/rate-limit": "^9.0.0",
     "@fastify/swagger": "^8.0.0",
     "@fastify/swagger-ui": "^3.0.0",
-    "@mcp-catalog/shared": "workspace:*",
+    "@reaatech/mcp-catalog-shared": "workspace:*",
     "bcryptjs": "^3.0.3",
     "dotenv": "^16.3.0",
     "drizzle-orm": "^0.45.2",
