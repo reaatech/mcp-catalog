@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build stage
-FROM node:24-alpine AS builder
+FROM node:26-alpine AS builder
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ COPY packages/shared ./packages/shared
 RUN pnpm -F shared build && pnpm -F mcp-server build
 
 # Production stage
-FROM node:24-alpine AS production
+FROM node:26-alpine AS production
 
 WORKDIR /app
 
