@@ -3,6 +3,8 @@ import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
+
+delete (helmet as unknown as Record<symbol, { fastify?: string }>)[Symbol.for('plugin-meta')]?.fastify;
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
