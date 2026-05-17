@@ -26,7 +26,7 @@ export const auditPlugin: FastifyPluginAsync = async (fastify) => {
 
     try {
       const userId = request.user?.id ?? null;
-      const action = `${request.routerMethod?.toLowerCase() || request.method.toLowerCase()}.${request.url.split('?')[0].split('/').pop() || 'unknown'}`;
+      const action = `${request.method.toLowerCase()}.${request.url.split('?')[0].split('/').pop() || 'unknown'}`;
       const params = (request.params as Record<string, unknown>) ?? {};
 
       await db.insert(auditLogs).values({
