@@ -5,7 +5,7 @@ FROM node:26-alpine AS builder
 
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN npm install -g pnpm@9
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.json ./
 COPY apps/mcp-server/package.json ./apps/mcp-server/
@@ -23,7 +23,7 @@ FROM node:26-alpine AS production
 
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN npm install -g pnpm@9
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/mcp-server/package.json ./apps/mcp-server/
