@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Fastify from 'fastify';
-import { ZodTypeProvider, validatorCompiler, serializerCompiler } from 'fastify-type-provider-zod';
+import { ZodV3TypeProvider, zValidatorCompiler, zSerializerCompiler } from '../../src/lib/type-provider.js';
 import { serverRoutes } from '../../src/routes/servers.js';
 
 const mockDbResults: Record<string, any[]> = {};
@@ -54,9 +54,9 @@ vi.mock('../../src/db/index.js', () => ({
 
 async function buildTestApp(opts: { authenticated?: boolean } = {}) {
   const { authenticated = true } = opts;
-  const app = Fastify({ logger: false }).withTypeProvider<ZodTypeProvider>();
-  app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  const app = Fastify({ logger: false }).withTypeProvider<ZodV3TypeProvider>();
+  app.setValidatorCompiler(zValidatorCompiler);
+  app.setSerializerCompiler(zSerializerCompiler);
   app.decorate('authenticate', async (request: any, reply: any) => {
     if (!authenticated) {
       return reply.code(401).send({ error: 'Authentication required' });

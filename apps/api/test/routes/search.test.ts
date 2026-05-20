@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Fastify from 'fastify';
-import { ZodTypeProvider, validatorCompiler, serializerCompiler } from 'fastify-type-provider-zod';
+import { ZodV3TypeProvider, zValidatorCompiler, zSerializerCompiler } from '../../src/lib/type-provider.js';
 import { searchRoutes } from '../../src/routes/search.js';
 import { servers, capabilities } from '../../src/db/schema.js';
 
@@ -40,9 +40,9 @@ describe('Search Routes', () => {
     vi.clearAllMocks();
     Object.keys(mockDbResults).forEach(k => delete mockDbResults[k]);
 
-    app = Fastify({ logger: false }).withTypeProvider<ZodTypeProvider>();
-    app.setValidatorCompiler(validatorCompiler);
-    app.setSerializerCompiler(serializerCompiler);
+    app = Fastify({ logger: false }).withTypeProvider<ZodV3TypeProvider>();
+    app.setValidatorCompiler(zValidatorCompiler);
+    app.setSerializerCompiler(zSerializerCompiler);
     await app.register(searchRoutes, { prefix: '/api/v1/search' });
   });
 

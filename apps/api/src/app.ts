@@ -7,7 +7,7 @@ import rateLimit from '@fastify/rate-limit';
 delete (helmet as unknown as Record<symbol, { fastify?: string }>)[Symbol.for('plugin-meta')]?.fastify;
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
-import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
+import { zValidatorCompiler, zSerializerCompiler, ZodV3TypeProvider } from './lib/type-provider.js';
 import { env } from './config.js';
 import { db } from './db/index.js';
 import { users, apiKeys } from './db/schema.js';
@@ -50,11 +50,11 @@ export async function buildApp() {
       : env.TRUST_PROXY === 'false'
         ? false
         : env.TRUST_PROXY.split(',').map((ip: string) => ip.trim()),
-  }).withTypeProvider<ZodTypeProvider>();
+  }).withTypeProvider<ZodV3TypeProvider>();
 
   // Add Zod type provider
-  app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  app.setValidatorCompiler(zValidatorCompiler);
+  app.setSerializerCompiler(zSerializerCompiler);
 
   // Register plugins
   await app.register(cookie, {

@@ -1,4 +1,4 @@
-import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { FastifyPluginAsyncZodV3 } from '../lib/type-provider.js';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { db } from '../db/index.js';
@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm';
 import { generateToken, createRefreshTokenFamily, rotateRefreshToken, revokeRefreshTokenFamily, verifyToken, generateApiKey, comparePassword } from '../utils/auth.js';
 import { env } from '../config.js';
 
-export const authRoutes: FastifyPluginAsyncZod = async (fastify) => {
+export const authRoutes: FastifyPluginAsyncZodV3 = async (fastify) => {
   // Login
   const cookieOpts = {
     httpOnly: true,

@@ -1,11 +1,11 @@
-import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { FastifyPluginAsyncZodV3 } from '../lib/type-provider.js';
 import { z } from 'zod';
 import { healthCheckService } from '../services/healthCheck.js';
 import { db } from '../db/index.js';
 import { servers } from '../db/schema.js';
 import { eq, sql } from 'drizzle-orm';
 
-export const healthRoutes: FastifyPluginAsyncZod = async (fastify) => {
+export const healthRoutes: FastifyPluginAsyncZodV3 = async (fastify) => {
   // Basic health check
   fastify.get('/', {
     schema: {
