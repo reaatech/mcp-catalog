@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Fastify from 'fastify';
 import cookie from '@fastify/cookie';
-import { ZodTypeProvider, validatorCompiler, serializerCompiler } from 'fastify-type-provider-zod';
+import { ZodV3TypeProvider, zValidatorCompiler, zSerializerCompiler } from '../../src/lib/type-provider.js';
 import { authRoutes } from '../../src/routes/auth.js';
 import { generateToken, hashPassword, createRefreshTokenFamily } from '../../src/utils/auth.js';
 
@@ -46,9 +46,9 @@ vi.mock('../../src/db/index.js', () => ({
 
 async function buildTestApp(opts: { user?: { id: string; role: string } | null } = {}) {
   const { user = { id: '550e8400-e29b-41d4-a716-446655440000', role: 'developer' } } = opts;
-  const app = Fastify({ logger: false }).withTypeProvider<ZodTypeProvider>();
-  app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  const app = Fastify({ logger: false }).withTypeProvider<ZodV3TypeProvider>();
+  app.setValidatorCompiler(zValidatorCompiler);
+  app.setSerializerCompiler(zSerializerCompiler);
   await app.register(cookie, { secret: 'test-cookie-secret-for-testing-only' });
   app.decorate('authenticate', async (request: any, reply: any) => {
     if (!user) {

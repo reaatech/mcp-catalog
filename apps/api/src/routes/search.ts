@@ -1,10 +1,10 @@
-import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { FastifyPluginAsyncZodV3 } from '../lib/type-provider.js';
 import { z } from 'zod';
 import { db } from '../db/index.js';
 import { servers, capabilities } from '../db/schema.js';
 import { sql, eq, or, desc } from 'drizzle-orm';
 
-export const searchRoutes: FastifyPluginAsyncZod = async (fastify) => {
+export const searchRoutes: FastifyPluginAsyncZodV3 = async (fastify) => {
   fastify.get('/', {
     schema: {
       description: 'Search across servers, capabilities, and tools',

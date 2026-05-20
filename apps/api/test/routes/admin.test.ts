@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Fastify from 'fastify';
-import { ZodTypeProvider, validatorCompiler, serializerCompiler } from 'fastify-type-provider-zod';
+import { ZodV3TypeProvider, zValidatorCompiler, zSerializerCompiler } from '../../src/lib/type-provider.js';
 import { adminRoutes } from '../../src/routes/admin.js';
 import { db } from '../../src/db/index.js';
 
@@ -46,9 +46,9 @@ vi.mock('../../src/db/index.js', () => ({
 }));
 
 async function buildTestApp() {
-  const app = Fastify({ logger: false }).withTypeProvider<ZodTypeProvider>();
-  app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  const app = Fastify({ logger: false }).withTypeProvider<ZodV3TypeProvider>();
+  app.setValidatorCompiler(zValidatorCompiler);
+  app.setSerializerCompiler(zSerializerCompiler);
   app.decorate('authenticate', async (request: any) => {
     request.user = {
       id: '550e8400-e29b-41d4-a716-446655440000',

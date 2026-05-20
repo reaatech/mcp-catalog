@@ -1,4 +1,4 @@
-import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { FastifyPluginAsyncZodV3 } from '../lib/type-provider.js';
 import { z } from 'zod';
 import { db } from '../db/index.js';
 import { users, accessPolicies, auditLogs } from '../db/schema.js';
@@ -6,7 +6,7 @@ import { eq, desc, sql } from 'drizzle-orm';
 import { hashPassword, validatePasswordComplexity } from '../utils/auth.js';
 import { env } from '../config.js';
 
-export const adminRoutes: FastifyPluginAsyncZod = async (fastify) => {
+export const adminRoutes: FastifyPluginAsyncZodV3 = async (fastify) => {
   // Users
   fastify.get('/users', {
     schema: {
