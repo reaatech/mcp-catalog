@@ -109,6 +109,7 @@ export const adminRoutes: FastifyPluginAsyncZod = async (fastify) => {
       params: z.object({ id: z.string().uuid() }),
       response: {
         204: z.void(),
+        401: z.object({ error: z.string() }),
         403: z.object({ error: z.string() }),
         404: z.object({ error: z.string() }),
       },
