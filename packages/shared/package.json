@@ -1,5 +1,6 @@
 {
   "name": "@reaatech/mcp-catalog-shared",
+  "description": "Shared TypeScript types and Zod validation schemas for the MCP Catalog monorepo",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
