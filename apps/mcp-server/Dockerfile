@@ -11,12 +11,12 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.json ./
 COPY apps/mcp-server/package.json ./apps/mcp-server/
 COPY packages/shared/package.json ./packages/shared/
 
-RUN pnpm install --frozen-lockfile --filter mcp-server...
+RUN pnpm install --frozen-lockfile --filter @reaatech/mcp-catalog-mcp-server...
 
 COPY apps/mcp-server ./apps/mcp-server
 COPY packages/shared ./packages/shared
 
-RUN pnpm -F shared build && pnpm -F mcp-server build
+RUN pnpm -F @reaatech/mcp-catalog-shared build && pnpm -F @reaatech/mcp-catalog-mcp-server build
 
 # Production stage
 FROM node:26-alpine AS production
@@ -29,7 +29,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/mcp-server/package.json ./apps/mcp-server/
 COPY packages/shared/package.json ./packages/shared/
 
-RUN pnpm install --frozen-lockfile --prod --filter mcp-server...
+RUN pnpm install --frozen-lockfile --prod --filter @reaatech/mcp-catalog-mcp-server...
 
 COPY --from=builder /app/apps/mcp-server/dist ./apps/mcp-server/dist
 COPY --from=builder /app/packages/shared/dist ./packages/shared/dist

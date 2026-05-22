@@ -11,12 +11,12 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/shared/package.json ./packages/shared/
 
-RUN pnpm install --frozen-lockfile --filter web...
+RUN pnpm install --frozen-lockfile --filter @reaatech/mcp-catalog-web...
 
 COPY apps/web ./apps/web
 COPY packages/shared ./packages/shared
 
-RUN pnpm -F shared build && pnpm -F web build
+RUN pnpm -F @reaatech/mcp-catalog-shared build && pnpm -F @reaatech/mcp-catalog-web build
 
 # Production stage
 FROM nginx:alpine AS production
