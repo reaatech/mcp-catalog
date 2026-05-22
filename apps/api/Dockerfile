@@ -11,12 +11,12 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.json ./
 COPY apps/api/package.json ./apps/api/
 COPY packages/shared/package.json ./packages/shared/
 
-RUN pnpm install --frozen-lockfile --filter api...
+RUN pnpm install --frozen-lockfile --filter @reaatech/mcp-catalog-api...
 
 COPY apps/api ./apps/api
 COPY packages/shared ./packages/shared
 
-RUN pnpm -F shared build && pnpm -F api build
+RUN pnpm -F @reaatech/mcp-catalog-shared build && pnpm -F @reaatech/mcp-catalog-api build
 
 # Production stage
 FROM node:26-alpine AS production
@@ -31,7 +31,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/api/package.json ./apps/api/
 COPY packages/shared/package.json ./packages/shared/
 
-RUN pnpm install --frozen-lockfile --prod --filter api...
+RUN pnpm install --frozen-lockfile --prod --filter @reaatech/mcp-catalog-api...
 
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
