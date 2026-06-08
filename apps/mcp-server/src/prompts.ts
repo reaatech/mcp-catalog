@@ -51,13 +51,13 @@ export async function handlePrompt(request: GetPromptRequest) {
         throw new Error('useCase argument is required');
       }
 
-      const data = await apiGet(`/api/v1/search?q=${encodeURIComponent(useCase)}`);
+      const data = await apiGet<{ servers?: CatalogServer[]; capabilities?: CatalogCapability[] }>(`/api/v1/search?q=${encodeURIComponent(useCase)}`);
 
       let description = `Based on your requirement: "${useCase}"\n\n`;
       description += 'Here are the relevant MCP servers and tools:\n\n';
 
       if (data.servers?.length) {
-        (data.servers as CatalogServer[]).forEach((server) => {
+        data.servers.forEach((server) => {
           description += `**${server.name}** (${server.status})\n`;
           description += `${server.description || 'No description'}\n`;
           description += `\n`;
@@ -66,7 +66,7 @@ export async function handlePrompt(request: GetPromptRequest) {
 
       if (data.capabilities?.length) {
         description += `\n## Matching Capabilities\n\n`;
-        (data.capabilities as CatalogCapability[]).forEach((cap) => {
+        data.capabilities.forEach((cap) => {
           description += `- **${cap.name}** (${cap.category})${cap.description ? ': ' + cap.description : ''}\n`;
         });
       }
@@ -100,14 +100,14 @@ export async function handlePrompt(request: GetPromptRequest) {
 
       for (const serverId of ids) {
         try {
-          const server = await apiGet(`/api/v1/servers/${serverId}`) as CatalogServer;
+          const server = await apiGet<CatalogServer>(`/api/v1/servers/${serverId}`);
           description += `## ${server.name} (${server.status})\n`;
           description += `${server.description || 'No description'}\n`;
           description += `URL: ${server.url}\n`;
           if (server.capabilities?.length) {
             description += `Capabilities:\n`;
             server.capabilities.forEach((cap) => {
-              description += `- ${cap.name} (${(cap as CatalogCapability).category || 'unknown'})\n`;
+              description += `- ${cap.name} (${(cap as { category?: string }).category || 'unknown'})\n`;
             });
           }
           description += `\n`;

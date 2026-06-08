@@ -240,7 +240,7 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
       params.append('limit', String(limit));
       params.append('offset', String(offset));
 
-      const data = await apiGet(`/api/v1/search?${params.toString()}`);
+      const data = await apiGet<{ servers?: CatalogServer[]; capabilities?: CatalogCapability[] }>(`/api/v1/search?${params.toString()}`);
 
       if (!data.servers?.length && !data.capabilities?.length) {
         return `No results found matching "${q}". Try different keywords or remove filters.`;
@@ -250,7 +250,7 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
 
       if (data.servers?.length) {
         result += `## Servers (${data.servers.length})\n\n`;
-        (data.servers as CatalogServer[]).forEach((server, i) => {
+        data.servers.forEach((server, i) => {
           result += `${i + 1}. **${server.name}** (${server.status})\n`;
           result += `   ${server.description || 'No description'}\n`;
           result += `   URL: ${server.url}\n\n`;
@@ -259,7 +259,7 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
 
       if (data.capabilities?.length) {
         result += `## Capabilities (${data.capabilities.length})\n\n`;
-        (data.capabilities as CatalogCapability[]).forEach((cap, i) => {
+        data.capabilities.forEach((cap, i) => {
           result += `${i + 1}. **${cap.name}** (${cap.category})\n`;
           result += `   ${cap.description || 'No description'}\n`;
           if (cap.tags?.length) result += `   Tags: ${cap.tags.join(', ')}\n`;
@@ -276,7 +276,7 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
         throw new Error(`Invalid arguments: ${parsed.error.message}`);
       }
       const { serverId } = parsed.data;
-      const server = await apiGet(`/api/v1/servers/${serverId}`) as CatalogServer;
+      const server = await apiGet<CatalogServer>(`/api/v1/servers/${serverId}`);
 
       let result = `# ${server.name}\n\n`;
       result += `**Status:** ${server.status}\n`;
@@ -315,8 +315,8 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
       params.append('limit', String(limit));
       params.append('offset', String(offset));
 
-      const data = await apiGet(`/api/v1/capabilities?${params.toString()}`);
-      const capabilities = (data.data || []) as CatalogCapability[];
+      const data = await apiGet<{ data: CatalogCapability[] }>(`/api/v1/capabilities?${params.toString()}`);
+      const capabilities = data.data;
 
       if (capabilities.length === 0) {
         return category
@@ -354,8 +354,8 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
       }
       const { serverId } = parsed.data;
 
-      const server = await apiGet(`/api/v1/servers/${serverId}`) as CatalogServer;
-      const healthHistory = await apiGet(`/health/history/${serverId}`).catch(() => [] as HealthCheckRecord[]);
+      const server = await apiGet<CatalogServer>(`/api/v1/servers/${serverId}`);
+      const healthHistory = await apiGet<HealthCheckRecord[]>(`/health/history/${serverId}`).catch(() => []);
 
       let result = `# Health Check: ${server.name}\n\n`;
       result += `**Current Status:** ${server.status.toUpperCase()}\n`;
@@ -383,7 +383,7 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
         result += '\n## Recent Health Checks\n\n';
         result += '| Time | Status | Response Time |\n';
         result += '|------|--------|---------------|\n';
-        (healthHistory as HealthCheckRecord[]).slice(0, 5).forEach((check) => {
+        healthHistory.slice(0, 5).forEach((check) => {
           const time = new Date(check.checkedAt).toLocaleTimeString();
           const emoji = check.status === 'healthy' ? '✅' : '❌';
           result += `| ${time} | ${emoji} ${check.status} | ${check.responseTimeMs}ms |\n`;
@@ -405,13 +405,13 @@ export async function handleTool(name: string, args: Record<string, unknown>) {
       let cap: CatalogCapability | undefined;
 
       if (capabilityId) {
-        cap = await apiGet(`/api/v1/capabilities/${capabilityId}`) as CatalogCapability;
+        cap = await apiGet<CatalogCapability>(`/api/v1/capabilities/${capabilityId}`);
         tool = cap.tools?.find((t) => t.id === toolId || t.name === toolId);
       } else {
-        const caps = await apiGet('/api/v1/capabilities?limit=100');
-        const capList = (caps.data || []) as CatalogCapability[];
+        const caps = await apiGet<{ data: CatalogCapability[] }>('/api/v1/capabilities?limit=100');
+        const capList = caps.data;
         const fullCaps = await Promise.all(
-          capList.map((c) => apiGet(`/api/v1/capabilities/${c.id}`) as Promise<CatalogCapability>)
+          capList.map((c) => apiGet<CatalogCapability>(`/api/v1/capabilities/${c.id}`))
         );
         for (const fullCap of fullCaps) {
           const found = fullCap.tools?.find((t) => t.id === toolId || t.name === toolId);

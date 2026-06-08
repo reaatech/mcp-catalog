@@ -1,10 +1,6 @@
 import type { Resource, ReadResourceRequest } from '@modelcontextprotocol/sdk/types.js';
 import { apiGet } from './lib/api-client.js';
 
-interface CatalogCapability {
-  category: string;
-}
-
 export const resources: Resource[] = [
   {
     uri: 'catalog://servers',
@@ -31,7 +27,7 @@ export async function handleResource(request: ReadResourceRequest) {
 
   switch (uri) {
     case 'catalog://servers': {
-      const data = await apiGet('/api/v1/servers?limit=100');
+      const data = await apiGet<{ data: Record<string, unknown>[] }>('/api/v1/servers?limit=100');
       return {
         contents: [
           {
@@ -44,7 +40,7 @@ export async function handleResource(request: ReadResourceRequest) {
     }
 
     case 'catalog://capabilities': {
-      const data = await apiGet('/api/v1/capabilities?limit=100');
+      const data = await apiGet<{ data: Record<string, unknown>[] }>('/api/v1/capabilities?limit=100');
       return {
         contents: [
           {
@@ -57,8 +53,8 @@ export async function handleResource(request: ReadResourceRequest) {
     }
 
     case 'catalog://categories': {
-      const data = await apiGet('/api/v1/capabilities?limit=100');
-      const capabilities = (data.data || []) as CatalogCapability[];
+      const data = await apiGet<{ data: { category: string }[] }>('/api/v1/capabilities?limit=100');
+      const capabilities = data.data || [];
       const categories = [...new Set(capabilities.map((c) => c.category))].sort();
       return {
         contents: [
