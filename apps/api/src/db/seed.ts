@@ -29,7 +29,9 @@ export async function seed() {
       })
       .returning();
     logger.info(`Created admin user: ${admin.email}`);
-    process.stderr.write(`\nSeed admin password: ${seedPassword}\nSave this password - it will not be displayed again.\n\n`);
+    process.stderr.write(
+      `\nSeed admin password: ${seedPassword}\nSave this password - it will not be displayed again.\n\n`,
+    );
   } else {
     logger.info(`Admin user already exists: ${admin.email}`);
   }
@@ -91,6 +93,73 @@ export async function seed() {
     added++;
   }
   logger.info(`Added ${added} new sample capabilities (${sampleCapabilities.length - added} already present)`);
+
+  const xquikName = 'Xquik MCP Server';
+  const [existingXquikServer] = await db.select().from(servers).where(eq(servers.name, xquikName)).limit(1);
+
+  let xquikServer = existingXquikServer;
+  if (!xquikServer) {
+    [xquikServer] = await db
+      .insert(servers)
+      .values({
+        name: xquikName,
+        description: 'Remote MCP server for X data workflows through the Xquik REST API',
+        url: 'https://xquik.com/mcp',
+        healthEndpoint: 'https://xquik.com/.well-known/mcp/server-card.json',
+        status: 'unknown',
+        registeredBy: admin.id,
+        metadata: {
+          version: '2.4.8',
+          documentation: 'https://docs.xquik.com/mcp/overview',
+          repository: 'https://github.com/Xquik-dev/x-twitter-scraper',
+          authentication: 'Xquik API key',
+        },
+      })
+      .returning();
+    logger.info(`Created sample server: ${xquikServer.name}`);
+  } else {
+    logger.info(`Sample server already exists: ${xquikServer.name}`);
+  }
+
+  const xquikCapabilities = [
+    {
+      name: 'Tweet Search',
+      description: 'Search public X posts through Xquik',
+      category: 'social-media',
+      tags: ['x', 'twitter', 'search'],
+    },
+    {
+      name: 'User Lookup',
+      description: 'Look up X user profiles and account data',
+      category: 'social-media',
+      tags: ['x', 'twitter', 'profiles'],
+    },
+    {
+      name: 'Follower Export',
+      description: 'Export followers and following lists for X accounts',
+      category: 'data-export',
+      tags: ['x', 'followers', 'export'],
+    },
+    {
+      name: 'Account Monitoring',
+      description: 'Monitor X accounts and keywords for new activity',
+      category: 'monitoring',
+      tags: ['x', 'monitoring', 'keywords'],
+    },
+  ];
+
+  let xquikAdded = 0;
+  for (const cap of xquikCapabilities) {
+    const [existing] = await db
+      .select()
+      .from(capabilities)
+      .where(and(eq(capabilities.serverId, xquikServer.id), eq(capabilities.name, cap.name)))
+      .limit(1);
+    if (existing) continue;
+    await db.insert(capabilities).values({ ...cap, serverId: xquikServer.id });
+    xquikAdded++;
+  }
+  logger.info(`Added ${xquikAdded} new Xquik capabilities (${xquikCapabilities.length - xquikAdded} already present)`);
   logger.info('Seeding completed!');
 }
 
