@@ -4,7 +4,7 @@ const apiKey = process.env.CATALOG_API_KEY || '';
 const rawTimeout = parseInt(process.env.CATALOG_REQUEST_TIMEOUT || '15000', 10);
 const requestTimeout = Number.isNaN(rawTimeout) ? 15000 : rawTimeout;
 
-export async function apiGet(path: string): Promise<any> {
+export async function apiGet<T = unknown>(path: string): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), requestTimeout);
   try {
